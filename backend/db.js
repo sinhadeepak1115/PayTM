@@ -1,30 +1,28 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
+const { Schema } = mongoose;
 
-mongoose.connect('mongodb+srv://admin:admin@cluster0.ogpdd0r.mongodb.net/')
+mongoose.connect('mongodb://localhost:27017')
 
-const schema = mongoose.Schema({
+const userSchema = new Schema({
   username: {
     type: String,
-    required: true,
-    unique: true,
-    minlength: 4,
-    maxlength: 20,
-    lowercase: true,
-    trim: true,
+    require: true
   },
   firstName: {
     type: String,
-    required: true,
+    require: true
   },
-  lastName: {
+  lastName:
+  {
     type: String,
-    required: true,
+    require: true
   },
+
   password: {
     type: String,
-    required: true,
-    minlength: 4,
-  },
+    require: true
+
+  }
 })
 
-module.exports = mongoose.model("User", schema)
+module.exports = mongoose.model("User", userSchema)

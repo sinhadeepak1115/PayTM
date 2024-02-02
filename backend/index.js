@@ -1,19 +1,20 @@
 const express = require("express");
-const rootRouter = require("./routes/index.js");
-const dotenv = require("dotenv").config();
-const cors = require("cors");
+const dotenv = require('dotenv').config();
+const cors = require('cors')
+
+const mainRouter = require("./routes/index")
 
 const app = express();
 
-app.use(cors());
+app.use(cors())
 
-app.use(express.json());
+const port = process.env.PORT;
+console.log(port)
+app.get("/", (req, res) => {
+  res.send("Hello World");
+})
 
-
-const port = process.env.PORT || 5000;
-
-
-app.use("/api/v1", rootRouter);
+app.use("/api/v1", mainRouter);
 
 app.listen(port, () => {
   console.log(`App Listening on port ${port}`)
