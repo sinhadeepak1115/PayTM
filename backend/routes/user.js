@@ -31,7 +31,22 @@ app.post("/signup", async (req, res) => {
 
     })
   }
-
+  const user = await User.create({
+    username: req.body.username,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    password: req.body.password
+  })
+  const userId = user._id;
+  const token = jwt.sign({
+    userId
+  }, JWT_SECRET);
+  res.json(
+    {
+      message: "User created successfully",
+      token: token
+    }
+  )
 })
 
 module.exports = router;
