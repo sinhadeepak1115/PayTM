@@ -13,6 +13,12 @@ const singnupSchema = z.object({
   password: z.string().min(5)
 })
 
+const singinSchema = z.object({
+  username: z.string().email(),
+  password: z.string().min(5)
+})
+
+
 app.post("/signup", async (req, res) => {
   const body = req.body;
   const { success } = singnupSchema.safeParse(req.body);
@@ -47,6 +53,32 @@ app.post("/signup", async (req, res) => {
       token: token
     }
   )
+})
+
+app.post("/signin", async (req, res) => {
+  const { success } = singinSchema.safeParse(req.body);
+  if (!success) {
+    return res.status(411).json({
+      message: "Incorrect Input"
+    })
+  }
+
+  const user = await User.findOne({
+    username: req.body.username,
+    password: req.body.password
+  });
+  if (user) {
+    const token = jwt.sign({
+      userId: user._id
+    }, JWT_SECRET);
+    res.json({
+      token: token
+    })
+    return
+  }
+  res.status(411).json({
+    message: "Error while logging in"
+  })
 })
 
 module.exports = router;
